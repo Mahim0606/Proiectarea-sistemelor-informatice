@@ -1,1 +1,1 @@
-# Proiectarea-sisyemelor-informatice
+# Proiectarea-sistemelor-informatice
