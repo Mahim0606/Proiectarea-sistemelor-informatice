@@ -1,4 +1,4 @@
-# Laboratorul 1 – Definește produsul inițial
+# Laboratorul 1 – Definirea produsul inițial
 
 ## Personal Investment Dashboard
 
