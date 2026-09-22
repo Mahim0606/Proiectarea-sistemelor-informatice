@@ -75,7 +75,7 @@ Prima versiune nu va permite tranzacționarea și nu se va conecta automat la br
 
 | Parte interesată | Motivație | Influență | Motiv |
 |---|---|---|---|
-| Investitor individual | Ridicată | Ridicată | Este utilizatorul principal al Dashboard-ului |
+| Investitor individual | Ridicată | Medie | Este utilizatorul principal al Dashboard-ului |
 | Proprietarul produsului | Ridicată | Ridicată | Decide funcționalitățile și domeniul produsului |
 | Furnizorul datelor de piață | Scăzută | Ridicată | Furnizează informațiile necesare despre active |
 | Autoritățile de reglementare | Scăzută | Ridicată | Pot influența regulile privind informațiile financiare |
