@@ -32,9 +32,17 @@ Măsurarea latenței începe în momentul în care Dashboard-ul primește cerere
 - cel puțin 95% dintre citirile corecte trebuie să se finalizeze în maximum **2 secunde**;
 - o citire care depășește 2 secunde este considerată o încălcare a țintei de latență.
 
+Aceasta poate fi exprimată astfel:
+
+```text
+p95 latency <= 2 s
+```
+
 Pentru `Stock price`, deoarece clientul dorește ca prețurile să pară imediate, se adoptă o țintă mai strictă:
 
-- 95% dintre citirile `Stock price` trebuie să se finalizeze în maximum **500 ms** în condiții normale de operare.
+```text
+p95 Stock price latency <= 500 ms
+```
 
 Un răspuns rapid care indică faptul că datele sunt indisponibile poate respecta cerința de latență, dar nu este considerat un rezultat corect al datelor.
 
@@ -46,7 +54,9 @@ Dashboard-ul este considerat disponibil atunci când utilizatorul autentificat p
 
 Pentru acest laborator se consideră că programul normal de tranzacționare este:
 
-**09:30 – 16:00 Eastern Time, în zilele de tranzacționare.**
+```text
+09:30 – 16:00 Eastern Time
+```
 
 Se aleg următoarele ținte:
 
@@ -75,7 +85,13 @@ Pentru o disponibilitate de 99,99%:
                   ≈ 51,5 secunde
 ```
 
-Bugetul de indisponibilitate în timpul orelor de tranzacționare este de aproximativ **52 secunde în 30 de zile**.
+Bugetul de indisponibilitate este de aproximativ:
+
+```text
+52 secunde / 30 zile
+```
+
+în timpul orelor de tranzacționare.
 
 Restul timpului:
 
@@ -92,7 +108,11 @@ Pentru 99,9% disponibilitate:
               ≈ 34,62 minute
 ```
 
-Bugetul de indisponibilitate pentru restul zilei este de aproximativ **34,6 minute în 30 de zile**.
+Bugetul de indisponibilitate pentru restul zilei este de aproximativ:
+
+```text
+34,6 minute / 30 zile
+```
 
 ---
 
@@ -100,7 +120,7 @@ Bugetul de indisponibilitate pentru restul zilei este de aproximativ **34,6 minu
 
 Pentru `Stock price`, fiecare rezultat trebuie să includă ora furnizorului.
 
-Întârzierea normală estimată a furnizorului este de aproximativ 15 minute.
+Întârzierea normală estimată a furnizorului este de aproximativ **15 minute**.
 
 Se adoptă următoarea regulă:
 
@@ -118,6 +138,8 @@ Exemplu:
 
 Dacă utilizatorul adaugă `AAPL` în Watchlist și operația se finalizează cu succes, următoarea citire a Watchlist-ului trebuie să conțină `AAPL`.
 
+`AAPL` este simbolul bursier al companiei Apple.
+
 Un utilizator nu poate citi sau modifica Watchlist-ul altui utilizator.
 
 ---
@@ -131,6 +153,8 @@ Pentru nivelul maxim analizat, Dashboard-ul trebuie să poată susține ținta c
 ---
 
 # 2. Estimări RPS în regim stabil
+
+RPS înseamnă **Requests Per Second**, adică numărul de cereri pe secundă.
 
 Formula utilizată este:
 
@@ -153,21 +177,11 @@ Sunt analizate trei niveluri:
 
 70% dintre utilizatori reîmprospătează la fiecare 30 de secunde.
 
-Pentru 300 utilizatori:
-
 ```text
-300 × 0,70 × 1 / 30 = 7 RPS
-```
+300 × 0,70 / 30 = 7 RPS
 
-Pentru 3.000:
-
-```text
 3000 × 0,70 / 30 = 70 RPS
-```
 
-Pentru 30.000:
-
-```text
 30000 × 0,70 / 30 = 700 RPS
 ```
 
@@ -189,7 +203,7 @@ Pentru 30.000:
 
 ## Stock price
 
-20% solicită o dată pe secundă.
+20% dintre utilizatori solicită prețul o dată pe secundă.
 
 ```text
 300 × 0,20 = 60 RPS
@@ -203,9 +217,15 @@ Pentru 30.000:
 
 ## History
 
-20% solicită o dată la 5 minute.
+20% dintre utilizatori solicită istoricul o dată la 5 minute.
 
-5 minute = 300 secunde.
+5 minute:
+
+```text
+5 × 60 = 300 secunde
+```
+
+Calcul:
 
 ```text
 300 × 0,20 / 300 = 0,2 RPS
@@ -219,7 +239,7 @@ Pentru 30.000:
 
 ## Watchlist
 
-60% reîmprospătează o dată pe minut.
+60% dintre utilizatori reîmprospătează o dată pe minut.
 
 ```text
 300 × 0,60 / 60 = 3 RPS
@@ -233,7 +253,7 @@ Pentru 30.000:
 
 ## Search
 
-10% caută de 3 ori pe minut.
+10% dintre utilizatori caută de 3 ori pe minut.
 
 ```text
 300 × 0,10 × 3 / 60 = 1,5 RPS
@@ -264,8 +284,8 @@ Pentru 30.000:
 La deschiderea pieței:
 
 - 30% dintre utilizatori reîmprospătează Overview o dată într-un interval de 10 secunde;
-- 60% dintre acești utilizatori reîmprospătează și Watchlist;
-- acest trafic se adaugă traficului stabil;
+- 60% dintre aceștia reîmprospătează și Watchlist;
+- traficul suplimentar se adaugă traficului stabil;
 - la final se aplică o marjă de capacitate de 10%.
 
 ## Flux Overview suplimentar
@@ -276,21 +296,13 @@ Formula:
 Utilizatori × 30% / 10 secunde
 ```
 
-Pentru 300:
+Calcul:
 
 ```text
 300 × 0,30 / 10 = 9 RPS
-```
 
-Pentru 3.000:
-
-```text
 3000 × 0,30 / 10 = 90 RPS
-```
 
-Pentru 30.000:
-
-```text
 30000 × 0,30 / 10 = 900 RPS
 ```
 
@@ -298,35 +310,25 @@ Pentru 30.000:
 
 ## Flux Watchlist suplimentar
 
-60% din grupul de 30%.
-
-Formula:
+60% din grupul de 30%:
 
 ```text
 Utilizatori × 0,30 × 0,60 / 10
 ```
 
-Pentru 300:
+Calcul:
 
 ```text
 300 × 0,30 × 0,60 / 10 = 5,4 RPS
-```
 
-Pentru 3.000:
-
-```text
 3000 × 0,30 × 0,60 / 10 = 54 RPS
-```
 
-Pentru 30.000:
-
-```text
 30000 × 0,30 × 0,60 / 10 = 540 RPS
 ```
 
 ---
 
-## Tabelul final
+## Tabel final
 
 | Calcul la deschiderea pieței | 300 Utilizatori | 3.000 Utilizatori | 30.000 Utilizatori |
 |---|---:|---:|---:|
@@ -334,11 +336,11 @@ Pentru 30.000:
 | Flux suplimentar Overview | 9 | 90 | 900 |
 | Flux suplimentar Watchlist | 5,4 | 54 | 540 |
 | **Subtotal** | **93,6** | **936** | **9.360** |
-| Marjă 10% | 9,36 | 93,6 | 936 |
+| Marjă de capacitate 10% | 9,36 | 93,6 | 936 |
 | Valoare cu marjă | 102,96 | 1.029,6 | 10.296 |
 | **Țintă finală rotunjită în sus** | **103 RPS** | **1.030 RPS** | **10.296 RPS** |
 
-Rotunjirea este aplicată doar rezultatului final.
+Rotunjirea este aplicată numai rezultatului final.
 
 ---
 
@@ -348,32 +350,35 @@ Rotunjirea este aplicată doar rezultatului final.
 
 Pentru acest Dashboard, un `Stock` reprezintă un instrument de capital care oferă deținătorului o participație într-o companie.
 
-Prima versiune va urmări acțiunile companiilor tranzacționate pe principalele două piețe americane:
+Prima versiune urmărește acțiuni tranzacționate pe principalele două piețe americane:
 
 - Nasdaq;
 - NYSE.
 
-Sunt excluse din prima versiune:
+Sunt excluse:
 
-- ETF-urile;
-- fondurile;
-- instrumentele derivate;
-- criptomonedele;
-- obligațiunile.
+- ETF-uri;
+- fonduri;
+- instrumente derivate;
+- criptomonede;
+- obligațiuni.
 
 Instrumentele inactive sau delistate nu vor putea fi adăugate ca instrumente noi în prima versiune.
 
-Pentru dimensionare utilizăm o estimare de aproximativ:
+Pentru estimarea capacității utilizăm aproximativ:
 
 ```text
-Nasdaq: 4.570 companii listate
-NYSE: aproximativ 2.400 emitenți
+Nasdaq: aproximativ 4.570
+NYSE: aproximativ 2.400
+```
 
-Total aproximativ:
+Total:
+
+```text
 4.570 + 2.400 = 6.970 Stocks
 ```
 
-Această valoare este utilizată ca estimare de capacitate și nu ca inventar exact al tuturor instrumentelor.
+Această valoare reprezintă o estimare pentru calculul capacității.
 
 ### Surse
 
@@ -389,15 +394,13 @@ NYSE:
 
 https://www.nyse.com/listings/why-nyse
 
-Date consultate în septembrie 2026.
-
 ---
 
-## 4.2 Date sincronizate
+# 4.2 Date sincronizate
 
-Pentru fiecare Stock sunt necesare următoarele informații.
+## Date de referință
 
-### Date de referință
+Pentru fiecare Stock sunt păstrate:
 
 - symbol;
 - company name;
@@ -406,27 +409,31 @@ Pentru fiecare Stock sunt necesare următoarele informații.
 - instrument type;
 - status.
 
-Aceste informații sunt utilizate pentru:
+Aceste informații sunt necesare pentru:
 
 - Search;
 - Filter;
 - identificarea Stock-ului.
 
-### Cel mai recent preț
+---
 
-Se păstrează:
+## Cel mai recent preț
+
+Pentru fiecare Stock se păstrează:
 
 - symbol;
 - latest price;
 - provider timestamp.
 
-Aceste date sunt necesare pentru:
+Aceste date sunt utilizate pentru:
 
 - Overview;
 - Stock price;
 - Watchlist.
 
-### Price history
+---
+
+## Price history
 
 Pentru istoric se păstrează:
 
@@ -438,21 +445,49 @@ Pentru istoric se păstrează:
 - close;
 - volume.
 
-Se presupune un interval de **1 minut** în timpul programului normal al pieței.
+Pentru prima versiune se presupune un interval de **15 minute** între punctele istorice.
 
-O zi de tranzacționare conține aproximativ:
+Acest interval reduce cantitatea de date stocată și este suficient pentru un Dashboard destinat urmăririi generale a investițiilor, nu tranzacționării de foarte mare frecvență.
+
+Programul normal al pieței este de aproximativ:
 
 ```text
-6,5 ore × 60 = 390 puncte
+6,5 ore
 ```
 
-Se păstrează istoricul pentru aproximativ **252 zile de tranzacționare**, adică aproximativ un an.
+Transformăm în minute:
+
+```text
+6,5 × 60 = 390 minute
+```
+
+Având un punct la fiecare 15 minute:
+
+```text
+390 / 15 = 26 puncte pe Stock pe zi
+```
+
+Prin urmare:
+
+```text
+26 puncte / Stock / zi
+```
+
+Istoricul se păstrează pentru aproximativ:
+
+```text
+252 zile de tranzacționare
+```
+
+adică aproximativ un an.
 
 ---
 
-## 4.3 Dimensiunea reprezentativă a înregistrărilor
+# 4.3 Dimensiunea reprezentativă a înregistrărilor
 
-Exemplu date de referință:
+## Date de referință
+
+Exemplu:
 
 ```json
 {
@@ -465,9 +500,17 @@ Exemplu date de referință:
 }
 ```
 
-Pentru estimare folosim aproximativ **114 bytes** per înregistrare.
+Estimare:
 
-Exemplu latest price:
+```text
+114 bytes / înregistrare
+```
+
+---
+
+## Latest price
+
+Exemplu:
 
 ```json
 {
@@ -483,7 +526,11 @@ Estimare:
 68 bytes / înregistrare
 ```
 
-Exemplu price history:
+---
+
+## Price history
+
+Exemplu:
 
 ```json
 {
@@ -505,9 +552,9 @@ Estimare:
 
 ---
 
-## 4.4 Calculul stocării
+# 4.4 Calculul stocării
 
-### Date de referință
+## Date de referință Stock
 
 ```text
 6.970 × 114 bytes
@@ -515,7 +562,9 @@ Estimare:
 ≈ 0,76 MiB
 ```
 
-### Latest prices
+---
+
+## Cele mai recente prețuri
 
 ```text
 6.970 × 68 bytes
@@ -523,48 +572,106 @@ Estimare:
 ≈ 0,45 MiB
 ```
 
-### Price history pe zi
+---
 
-Număr înregistrări:
+## Price history pe zi
+
+Avem:
 
 ```text
-6.970 × 390
-= 2.718.300 înregistrări/zi
+6.970 Stocks
+26 puncte / Stock / zi
+```
+
+Numărul total de înregistrări pe zi:
+
+```text
+6.970 × 26
+= 181.220 înregistrări / zi
+```
+
+Stocare brută pe zi:
+
+```text
+181.220 × 115 bytes
+= 20.840.300 bytes
+≈ 20,84 MB
+≈ 19,87 MiB
+```
+
+---
+
+## Price history pentru un an
+
+Avem:
+
+```text
+6.970 Stocks
+× 26 puncte pe zi
+× 252 zile
+```
+
+Numărul de înregistrări:
+
+```text
+6.970 × 26 × 252
+= 45.667.440 înregistrări
 ```
 
 Stocare:
 
 ```text
-2.718.300 × 115 bytes
-= 312.604.500 bytes
-≈ 298 MiB / zi
+45.667.440 × 115 bytes
+= 5.251.755.600 bytes
 ```
 
-### Price history pentru un an
+În GB:
 
 ```text
-6.970 × 390 × 252
-= 685.011.600 înregistrări
+5.251.755.600 / 1.000.000.000
+≈ 5,25 GB
 ```
 
-Stocare:
+În GiB:
 
 ```text
-685.011.600 × 115 bytes
-= 78.776.334.000 bytes
-≈ 78,78 GB
-≈ 73,37 GiB
+5.251.755.600 / 1.073.741.824
+≈ 4,89 GiB
 ```
 
-Aceste valori reprezintă stocare brută și nu includ indexuri, replicare, backup, metadate sau alte costuri interne.
+Prin urmare, istoricul anual necesită aproximativ:
 
-| Set de date | Decizia despre produs și perioada de păstrare | Număr înregistrări | Bytes / înregistrare | Stocare brută |
+```text
+5,25 GB
+```
+
+sau:
+
+```text
+4,89 GiB
+```
+
+---
+
+## Tabelul estimării stocării
+
+| Set de date | Decizia despre produs și perioada de păstrare | Calculul numărului de înregistrări | Octeți per înregistrare | Stocare brută |
 |---|---|---:|---:|---:|
 | Date de referință Stock | Stocks active | 6.970 | 114 | ~0,76 MiB |
-| Cele mai recente prețuri | Ultimul rezultat per Stock | 6.970 | 68 | ~0,45 MiB |
-| Price history | 1 minut, ~252 zile | 685.011.600 | 115 | ~78,78 GB |
+| Cele mai recente prețuri | Ultimul preț per Stock | 6.970 | 68 | ~0,45 MiB |
+| Price history | 15 minute, 252 zile | 45.667.440 | 115 | ~5,25 GB |
 | Alte date selectate | Nu sunt necesare separat în v1 | 0 | 0 | 0 |
-| **Total aproximativ** | | | | **~78,78 GB** |
+| **Total aproximativ** | | | | **~5,25 GB** |
+
+Aceste valori reprezintă stocare brută.
+
+Nu sunt incluse:
+
+- indexuri;
+- replicare;
+- backup;
+- metadate;
+- alte costuri interne ale sistemului.
 
 ---
 
@@ -574,22 +681,24 @@ Aceste valori reprezintă stocare brută și nu includ indexuri, replicare, back
 
 | Calitate | Posibil blocaj | Dovezi din laborator | Efect posibil | Ce trebuie măsurat |
 |---|---|---|---|---|
-| Latență | Citirile frecvente Stock price | Până la 6.000 RPS Stock price în regim stabil | Creșterea timpului de răspuns peste 500 ms sau 2 s | p95/p99 latency pentru Stock price |
-| Consistență | Date întârziate de la Market Data Provider | Furnizorul poate avea ~15 minute întârziere | Utilizatorul poate vedea informații vechi | Vechimea datelor și provider timestamp |
-| Debit | Vârful de trafic la deschiderea pieței | 10.296 RPS reprezintă ținta maximă calculată | Sistemul poate refuza sau întârzia cereri | RPS susținut, error rate și queue time |
-| Disponibilitate | Dependența de Market Data Provider | Prețurile și istoricul depind de sistemul extern | Unele rezultate pot deveni indisponibile | Disponibilitatea Dashboard-ului și a furnizorului separat |
+| Latență | Citirile frecvente Stock price | Până la 6.000 RPS Stock price | Creșterea timpului de răspuns | p95 și p99 latency |
+| Consistență | Date întârziate de la Market Data Provider | Furnizorul poate avea aproximativ 15 minute întârziere | Utilizatorul poate vedea informații vechi | Provider timestamp și vechimea datelor |
+| Debit | Vârful de trafic la deschiderea pieței | 10.296 RPS la nivelul maxim | Cereri întârziate sau respinse | RPS, error rate și queue time |
+| Disponibilitate | Dependența de Market Data Provider | Datele provin dintr-un sistem extern | Unele date pot deveni indisponibile | Disponibilitatea Dashboard-ului și furnizorului |
+
+---
 
 ## Latență
 
 Calea `Stock price` este cea mai solicitată.
 
-Pentru 30.000 de utilizatori concurenți aceasta generează:
+Pentru 30.000 de utilizatori concurenți:
 
 ```text
 6.000 RPS
 ```
 
-Acest lucru nu demonstrează că există deja un blocaj, dar indică faptul că această cale trebuie testată atent.
+Această valoare nu demonstrează existența unui blocaj, dar indică o zonă care trebuie testată.
 
 Trebuie măsurate:
 
@@ -602,9 +711,9 @@ Trebuie măsurate:
 
 ## Consistență
 
-Dashboard-ul depinde de Market Data Provider pentru prețurile pieței.
+Dashboard-ul depinde de Market Data Provider.
 
-Dacă datele furnizorului sunt întârziate, Dashboard-ul poate primi în continuare răspunsuri rapide, dar informațiile pot să nu mai fie suficient de actuale.
+Dacă datele furnizorului sunt întârziate, Dashboard-ul poate răspunde rapid, dar informația prezentată poate fi prea veche.
 
 Trebuie măsurată:
 
@@ -626,22 +735,32 @@ pentru a determina vechimea informației.
 
 la deschiderea pieței pentru 30.000 de utilizatori concurenți.
 
-Sistemul trebuie testat la această sarcină pentru a verifica dacă poate menține latența și rata de erori în limitele stabilite.
+Sistemul trebuie testat pentru a verifica dacă poate menține această sarcină fără să depășească țintele de latență și eroare.
 
 ---
 
 ## Disponibilitate
 
-Market Data Provider este o dependență externă importantă.
+Market Data Provider reprezintă o dependență externă.
 
-Dashboard-ul trebuie să diferențieze:
+Dashboard-ul trebuie să diferențieze între:
 
 - indisponibilitatea Dashboard-ului;
 - indisponibilitatea datelor externe.
 
-Dacă furnizorul nu oferă un preț valid, Dashboard-ul trebuie să prezinte starea ca indisponibilă și nu să afișeze valoarea `0`.
+Dacă furnizorul nu oferă un preț valid, Dashboard-ul trebuie să prezinte:
 
-Trebuie măsurate separat disponibilitatea Dashboard-ului și disponibilitatea informațiilor furnizate de sistemul extern.
+```text
+Preț indisponibil
+```
+
+și nu:
+
+```text
+0
+```
+
+Disponibilitatea Dashboard-ului și disponibilitatea furnizorului trebuie măsurate separat.
 
 ---
 
@@ -649,8 +768,51 @@ Trebuie măsurate separat disponibilitatea Dashboard-ului și disponibilitatea i
 
 În cadrul laboratorului au fost transformate cerințele generale ale Personal Investment Dashboard în obiective măsurabile.
 
-Au fost definite cerințe pentru latență, disponibilitate, consistență și debit și a fost estimat volumul de trafic pentru 300, 3.000 și 30.000 de utilizatori concurenți.
+Au fost definite cerințe pentru:
 
-Pentru nivelul maxim, traficul stabil estimat este de **7.920 RPS**, iar ținta de capacitate la deschiderea pieței este de **10.296 RPS**.
+- latență;
+- disponibilitate;
+- consistență;
+- debit.
 
-De asemenea, a fost estimată stocarea necesară pentru datele de piață și au fost identificate principalele zone care trebuie investigate pentru posibile probleme de latență, consistență, debit și disponibilitate.
+Au fost analizate trei niveluri:
+
+```text
+300 utilizatori
+3.000 utilizatori
+30.000 utilizatori
+```
+
+Pentru nivelul maxim, traficul stabil estimat este:
+
+```text
+7.920 RPS
+```
+
+iar ținta de capacitate la deschiderea pieței este:
+
+```text
+10.296 RPS
+```
+
+Pentru Price history s-a ales un interval de **15 minute**, ceea ce produce:
+
+```text
+26 puncte / Stock / zi
+```
+
+Pentru aproximativ 6.970 Stocks și 252 de zile de tranzacționare rezultă:
+
+```text
+45.667.440 înregistrări
+```
+
+și aproximativ:
+
+```text
+5,25 GB
+```
+
+de date istorice brute pentru un an.
+
+De asemenea, au fost identificate principalele zone care trebuie investigate pentru posibile probleme de latență, consistență, debit și disponibilitate.
