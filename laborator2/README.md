@@ -447,7 +447,6 @@ Pentru istoric se păstrează:
 
 Pentru prima versiune se presupune un interval de **15 minute** între punctele istorice.
 
-Acest interval reduce cantitatea de date stocată și este suficient pentru un Dashboard destinat urmăririi generale a investițiilor, nu tranzacționării de foarte mare frecvență.
 
 Programul normal al pieței este de aproximativ:
 
